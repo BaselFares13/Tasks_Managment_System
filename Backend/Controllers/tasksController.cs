@@ -64,12 +64,15 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllTasks()
+        public IActionResult GetAllTasks(bool orderByPriority = false)
         {
             try
             {
 
                 var createdTask = _dbContext.GetAll();
+
+                if(orderByPriority)
+                    createdTask = createdTask.OrderByDescending(t => t.Priority).ToList();
 
                 return Ok(
                     new
@@ -127,5 +130,6 @@ namespace Backend.Controllers
                 );
             }
         }
+
     }
 }
