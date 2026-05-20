@@ -62,5 +62,34 @@ namespace Backend.Controllers
                 );
             }
         }
+
+        [HttpGet]
+        public IActionResult GetAllTasks()
+        {
+            try
+            {
+
+                var createdTask = _dbContext.GetAll();
+
+                return StatusCode(201,
+                    new
+                    {
+                        Success = true,
+                        Data = createdTask
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
     }
 }

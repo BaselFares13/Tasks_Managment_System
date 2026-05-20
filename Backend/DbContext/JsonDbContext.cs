@@ -19,7 +19,7 @@ namespace Backend.DbContext
         {
             _tasks = Load();
         }
-        public IList<TaskModel> GetAll() { return new List<TaskModel>(); }
+        public IList<TaskModel> GetAll() { return _tasks; }
         public TaskModel Add(TaskModel task) {
             
             if(!Enum.IsDefined(typeof(Priority), task.Priority))
@@ -48,11 +48,10 @@ namespace Backend.DbContext
                 throw new Exception("File not found: " + _filePath);
 
             var json = File.ReadAllText(_filePath);
-            var tasks =  JsonSerializer.Deserialize<List<TaskModel>>(json, _jsonOptions);
 
-            if(tasks == null)
-                throw new Exception("Failed to deserialize tasks from file: " + _filePath);
+            if (string.IsNullOrWhiteSpace(json)) return new List<TaskModel>();
 
+            var tasks = JsonSerializer.Deserialize<List<TaskModel>>(json, _jsonOptions) ?? new List<TaskModel>();
             return tasks;
         }
 

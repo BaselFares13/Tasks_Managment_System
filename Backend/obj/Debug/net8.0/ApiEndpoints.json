@@ -14,5 +14,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "GetAllTasks",
+    "RelativePath": "api/tasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]
