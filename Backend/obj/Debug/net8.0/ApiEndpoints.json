@@ -1,0 +1,18 @@
+[
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "CreateTask",
+    "RelativePath": "api/tasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "taskDto",
+        "Type": "Backend.DTOs.AddTaskDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
