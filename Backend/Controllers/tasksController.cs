@@ -4,6 +4,7 @@ using Backend.DTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Backend.DbContext;
+using Backend.Factories;
 
 namespace Backend.Controllers
 {
@@ -12,9 +13,11 @@ namespace Backend.Controllers
     public class tasksController : ControllerBase
     {
         private readonly IDbContext _dbContext;
+        private readonly ITaskFactory _taskFactory; 
         public tasksController()
         {
             _dbContext = JsonDbContextSingleton.GetInstance();
+            _taskFactory = new Factories.TaskFactory();
         }
 
         [HttpPost]
@@ -22,13 +25,7 @@ namespace Backend.Controllers
         {
             try
             {
-                var task = new Models.TaskModel
-                {
-                    Title = taskDto.Title,
-                    Description = taskDto.Description,
-                    Deadline = taskDto.Deadline ?? DateTime.UtcNow,
-                    Priority = taskDto.Priority ?? Models.Priority.Medium
-                };
+                var task = _taskFactory.CreateFromAdd(taskDto);
 
                 var createdTask = _dbContext.Add(task);
 
@@ -177,14 +174,7 @@ namespace Backend.Controllers
         {
             try
             {
-                var task = new Models.TaskModel
-                {
-                    Title = updateTaskDTO.Title,
-                    Description = updateTaskDTO.Description,
-                    Deadline = updateTaskDTO.Deadline ?? DateTime.UtcNow,
-                    Priority = updateTaskDTO.Priority ?? Models.Priority.Medium,
-                    Status = updateTaskDTO.Status ?? Models.TaskStatus.ToDo
-                };
+                var task = _taskFactory.CreateFromUpdate(updateTaskDTO);
 
                 var UpdatedTask = _dbContext.Update(Guid.Parse(id), task);
 
