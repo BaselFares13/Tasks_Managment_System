@@ -1,23 +1,5 @@
 [
   {
-    "Id": "970fb6b4-2b57-4979-8d91-62f12b3d3157",
-    "Title": "string",
-    "Description": "string",
-    "Deadline": "2026-05-20T11:18:29.805Z",
-    "Priority": "Low",
-    "Status": "ToDo",
-    "CreatedAt": "2026-05-20T11:18:31.7224618Z"
-  },
-  {
-    "Id": "e0b1f313-186e-4d35-b716-70b18085044a",
-    "Title": "string",
-    "Description": "string",
-    "Deadline": "2026-05-20T11:18:29.805Z",
-    "Priority": "Low",
-    "Status": "ToDo",
-    "CreatedAt": "2026-05-20T11:18:48.0196795Z"
-  },
-  {
     "Id": "e8144736-7380-4c66-9c43-526dde46ae11",
     "Title": "Hello World",
     "Description": "Say Welcome",
@@ -28,11 +10,11 @@
   },
   {
     "Id": "fed5170f-c92d-45f1-b329-2d8790bd073c",
-    "Title": "string",
-    "Description": "string",
-    "Deadline": "2026-05-20T11:40:39.875Z",
+    "Title": "Updated One",
+    "Description": "Updated Task",
+    "Deadline": "2026-05-20T12:30:35.247Z",
     "Priority": "Low",
-    "Status": "ToDo",
+    "Status": "Completed",
     "CreatedAt": "2026-05-20T11:40:41.8979499Z"
   },
   {
