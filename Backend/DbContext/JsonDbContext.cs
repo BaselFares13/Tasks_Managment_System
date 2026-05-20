@@ -20,7 +20,7 @@ namespace Backend.DbContext
         {
             _tasks = Load();
         }
-        public IList<TaskModel> GetAll() { return _tasks.OrderByDescending(t =>t.Deadline).ToList(); }
+        public IList<TaskModel> GetAll() { return _tasks.OrderByDescending(t =>t.CreatedAt).ToList(); }
         public TaskModel Add(TaskModel task) {
             
             if(!Enum.IsDefined(typeof(Priority), task.Priority))

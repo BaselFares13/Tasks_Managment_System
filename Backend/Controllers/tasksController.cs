@@ -64,12 +64,15 @@ namespace Backend.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllTasks(bool orderByPriority = false)
+        public IActionResult GetAllTasks(bool orderByDeadline = false, bool orderByPriority = false)
         {
             try
             {
 
                 var createdTask = _dbContext.GetAll();
+
+                if(orderByDeadline)
+                    createdTask = createdTask.OrderByDescending(t => t.Deadline).ToList();
 
                 if(orderByPriority)
                     createdTask = createdTask.OrderByDescending(t => t.Priority).ToList();
@@ -96,7 +99,7 @@ namespace Backend.Controllers
         }
 
         [HttpGet("Filter")]
-        public IActionResult GetFilteredTasks(bool completed = false, bool highPrioritized = false)
+        public IActionResult GetFilteredTasks(bool completed = false, bool incompleted = false, bool highPrioritized = false)
         {
             try
             {
@@ -105,7 +108,8 @@ namespace Backend.Controllers
 
                 if (completed)
                     createdTask = createdTask.Where(t => t.Status == Models.TaskStatus.Completed).ToList();
-                else
+                
+                if(incompleted)
                     createdTask = createdTask.Where(t => t.Status == Models.TaskStatus.ToDo).ToList();
 
                 if(highPrioritized)
