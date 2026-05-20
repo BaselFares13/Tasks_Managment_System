@@ -241,5 +241,38 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpGet("{id:required}")]
+        public IActionResult GetTaskById(string id)
+        {
+            try
+            {
+                var Task = _dbContext.GetById(Guid.Parse(id));
+
+                if (Task == null)
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = "Task not found."
+                    });
+
+                return Ok(new
+                {
+                    Success = true,
+                    Data = Task
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
+
     }
 }
