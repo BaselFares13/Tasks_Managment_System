@@ -133,7 +133,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost("MarkCompleted/{id:required}")]
-        public IActionResult GetAllTasks(string id)
+        public IActionResult MarkTaskAsCompleted(string id)
         {
             try
             {
@@ -152,6 +152,50 @@ namespace Backend.Controllers
                     {
                         Success = true,
                         Data = MarkedTask
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
+
+        [HttpPut("{id:required}")]
+        public IActionResult UpdateTask(string id, [FromBody] UpdateTaskDTO updateTaskDTO)
+        {
+            try
+            {
+                var task = new Models.TaskModel
+                {
+                    Title = updateTaskDTO.Title,
+                    Description = updateTaskDTO.Description,
+                    Deadline = updateTaskDTO.Deadline ?? DateTime.UtcNow,
+                    Priority = updateTaskDTO.Priority ?? Models.Priority.Medium,
+                    Status = updateTaskDTO.Status ?? Models.TaskStatus.ToDo
+                };
+
+                var UpdatedTask = _dbContext.Update(Guid.Parse(id), task);
+
+                if (UpdatedTask == null)
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = "Task not found."
+                    });
+
+                return Ok(
+                    new
+                    {
+                        Success = true,
+                        Data = UpdatedTask
                     }
                 );
             }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Backend.DbContext.Interfaces;
 using Backend.Models;
 
@@ -36,7 +37,25 @@ namespace Backend.DbContext
         }
         public TaskModel? GetById(Guid id) =>
         _tasks.FirstOrDefault(t => t.Id == id);
-        public TaskModel? Update(Guid id, TaskModel updated) { return null; }
+        public TaskModel? Update(Guid id, TaskModel updated) {
+            var existing = GetById(id);
+            if (existing is null) return null;
+
+            if (!Enum.IsDefined(typeof(Priority), updated.Priority))
+                throw new ValidationException("Invalid task priority value.");
+
+            if (!Enum.IsDefined(typeof(Models.TaskStatus), updated.Status))
+                throw new ValidationException("Invalid task status value.");
+
+            existing.Title = updated.Title;
+            existing.Description = updated.Description;
+            existing.Deadline = updated.Deadline;
+            existing.Priority = updated.Priority;
+            existing.Status = updated.Status;
+
+            Save();
+            return existing;
+        }
         public bool Delete(Guid id) { return false; }
         public TaskModel? MarkCompleted(Guid id) {
             var task = GetById(id);
