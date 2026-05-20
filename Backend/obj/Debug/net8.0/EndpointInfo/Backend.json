@@ -45,6 +45,28 @@
           }
         }
       }
+    },
+    "/api/tasks/MarkCompleted/{id}": {
+      "post": {
+        "tags": [
+          "tasks"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -78,12 +100,11 @@
       },
       "Priority": {
         "enum": [
-          0,
-          1,
-          2
+          "Low",
+          "Medium",
+          "High"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       }
     }
   }

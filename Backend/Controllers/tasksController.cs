@@ -71,11 +71,47 @@ namespace Backend.Controllers
 
                 var createdTask = _dbContext.GetAll();
 
-                return StatusCode(201,
+                return Ok(
                     new
                     {
                         Success = true,
                         Data = createdTask
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
+
+        [HttpPost("MarkCompleted/{id:required}")]
+        public IActionResult GetAllTasks(string id)
+        {
+            try
+            {
+
+                var MarkedTask = _dbContext.MarkCompleted(Guid.Parse(id));
+
+                if (MarkedTask == null)
+                    return NotFound(new
+                    {
+                        Success = false,
+                        Message = "Task not found."
+                    });
+
+                return Ok(
+                    new
+                    {
+                        Success = true,
+                        Data = MarkedTask
                     }
                 );
             }

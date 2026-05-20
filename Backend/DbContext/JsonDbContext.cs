@@ -34,10 +34,18 @@ namespace Backend.DbContext
             
             return task;
         }
-        public TaskModel? GetById(Guid id) { return null; }
+        public TaskModel? GetById(Guid id) =>
+        _tasks.FirstOrDefault(t => t.Id == id);
         public TaskModel? Update(Guid id, TaskModel updated) { return null; }
         public bool Delete(Guid id) { return false; }
-        public TaskModel? MarkCompleted(Guid id) { return new TaskModel(); }
+        public TaskModel? MarkCompleted(Guid id) {
+            var task = GetById(id);
+            if (task is null) return null;
+
+            task.Status = Models.TaskStatus.Completed;
+            Save();
+            return task;
+        }
         public void Save() {
             var json = JsonSerializer.Serialize(_tasks, _jsonOptions);
             File.WriteAllText(_filePath, json);
