@@ -95,6 +95,43 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpGet("Filter")]
+        public IActionResult GetFilteredTasks(bool completed = false, bool highPrioritized = false)
+        {
+            try
+            {
+
+                var createdTask = _dbContext.GetAll();
+
+                if (completed)
+                    createdTask = createdTask.Where(t => t.Status == Models.TaskStatus.Completed).ToList();
+                else
+                    createdTask = createdTask.Where(t => t.Status == Models.TaskStatus.ToDo).ToList();
+
+                if(highPrioritized)
+                    createdTask = createdTask.Where(t => t.Priority == Models.Priority.High).ToList();
+
+                return Ok(
+                    new
+                    {
+                        Success = true,
+                        Data = createdTask
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
+
         [HttpPost("MarkCompleted/{id:required}")]
         public IActionResult GetAllTasks(string id)
         {

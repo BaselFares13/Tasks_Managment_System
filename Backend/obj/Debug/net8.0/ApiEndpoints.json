@@ -33,6 +33,27 @@
   },
   {
     "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "GetFilteredTasks",
+    "RelativePath": "api/tasks/Filter",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "completed",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "highPriority",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
     "Method": "GetAllTasks",
     "RelativePath": "api/tasks/MarkCompleted/{id}",
     "HttpMethod": "POST",
