@@ -56,7 +56,14 @@ namespace Backend.DbContext
             Save();
             return existing;
         }
-        public bool Delete(Guid id) { return false; }
+        public bool Delete(Guid id) {
+            var task = GetById(id);
+            if (task is null) return false;
+
+            _tasks.Remove(task);
+            Save();
+            return true;
+        }
         public TaskModel? MarkCompleted(Guid id) {
             var task = GetById(id);
             if (task is null) return null;

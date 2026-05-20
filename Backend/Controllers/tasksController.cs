@@ -212,5 +212,34 @@ namespace Backend.Controllers
             }
         }
 
+        [HttpDelete("{id:required}")]
+        public IActionResult DeleteTask(string id)
+        {
+            try
+            {
+                var result = _dbContext.Delete(Guid.Parse(id));
+
+                if (result == false)
+                    return BadRequest(new
+                    {
+                        Success = false,
+                        Message = "Task not found or task was not deleted."
+                    });
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500,
+                    new
+                    {
+                        Success = false,
+                        Message = "An error occurred while creating the task.",
+                        Details = ex.Message
+                    }
+                );
+            }
+        }
+
     }
 }
