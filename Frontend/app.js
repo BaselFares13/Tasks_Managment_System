@@ -119,4 +119,55 @@ document.getElementById('submitAdd').addEventListener('click', async () => {
     }
 });
 
+async function openEdit(id) {
+    const res = await apiFetch(`${API}/${id}`);
+    if (!res?.success) return alert('Could not load task.');
+
+    const t = res.data;
+    const pLabel = t.priority;
+    const sLabel =t.status;
+
+    document.getElementById('editId').value = t.id;
+    document.getElementById('editTitle').value = t.title;
+    document.getElementById('editDesc').value = t.description;
+    document.getElementById('editDeadline').value = toLocalDatetimeValue(t.deadline);
+
+    document.getElementById('editPriority').value =
+        Object.entries(PRIORITY_LABEL).find(([, v]) => v === pLabel)?.[0] ?? 1;
+    document.getElementById('editStatus').value =
+        Object.entries(STATUS_LABEL).find(([, v]) => v === sLabel)?.[0] ?? 0;
+
+    document.getElementById('editError').textContent = '';
+    document.getElementById('editModal').classList.remove('hidden');
+}
+
+document.getElementById('cancelEdit').addEventListener('click', () => {
+    document.getElementById('editModal').classList.add('hidden');
+});
+
+document.getElementById('submitEdit').addEventListener('click', async () => {
+    const id = document.getElementById('editId').value;
+    const title = document.getElementById('editTitle').value.trim();
+    const desc = document.getElementById('editDesc').value.trim();
+    const deadline = document.getElementById('editDeadline').value;
+    const priority = parseInt(document.getElementById('editPriority').value);
+    const status = parseInt(document.getElementById('editStatus').value);
+    const errEl = document.getElementById('editError');
+
+    if (!title || !desc || !deadline) {
+        errEl.textContent = 'All fields are required.';
+        return;
+    }
+
+    const body = { title, description: desc, deadline: new Date(deadline).toISOString(), priority, status };
+    const res = await apiFetch(`${API}/${id}`, { method: 'PUT', body: JSON.stringify(body) });
+
+    if (res?.success) {
+        document.getElementById('editModal').classList.add('hidden');
+        loadTasks();
+    } else {
+        errEl.textContent = res?.message || 'Error updating task.';
+    }
+});
+
 loadTasks();
