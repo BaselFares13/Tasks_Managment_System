@@ -182,4 +182,6 @@ async function deleteTask(id) {
     loadTasks();
 }
 
+document.getElementById('applyFilters').addEventListener('click', loadTasks);
+
 loadTasks();
