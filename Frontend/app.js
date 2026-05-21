@@ -84,4 +84,39 @@ async function loadTasks() {
     }
 }
 
+document.getElementById('openAddModal').addEventListener('click', () => {
+    document.getElementById('addModal').classList.remove('hidden');
+    document.getElementById('addError').textContent = '';
+});
+
+document.getElementById('cancelAdd').addEventListener('click', () => {
+    document.getElementById('addModal').classList.add('hidden');
+});
+
+document.getElementById('submitAdd').addEventListener('click', async () => {
+    const title = document.getElementById('addTitle').value.trim();
+    const desc = document.getElementById('addDesc').value.trim();
+    const deadline = document.getElementById('addDeadline').value;
+    const priority = parseInt(document.getElementById('addPriority').value);
+    const errEl = document.getElementById('addError');
+
+    if (!title || !desc || !deadline) {
+        errEl.textContent = 'All fields are required.';
+        return;
+    }
+
+    const body = { title, description: desc, deadline: new Date(deadline).toISOString(), priority };
+    const res = await apiFetch(API, { method: 'POST', body: JSON.stringify(body) });
+
+    if (res?.success) {
+        document.getElementById('addModal').classList.add('hidden');
+        document.getElementById('addTitle').value = '';
+        document.getElementById('addDesc').value = '';
+        document.getElementById('addDeadline').value = '';
+        loadTasks();
+    } else {
+        errEl.textContent = res?.message || 'Error creating task.';
+    }
+});
+
 loadTasks();
