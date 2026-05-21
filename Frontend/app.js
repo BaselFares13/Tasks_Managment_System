@@ -170,4 +170,10 @@ document.getElementById('submitEdit').addEventListener('click', async () => {
     }
 });
 
+async function markCompleted(id) {
+    const res = await apiFetch(`${API}/MarkCompleted/${id}`, { method: 'POST' });
+    if (res?.success) loadTasks();
+    else alert('Failed to mark task as completed.');
+}
+
 loadTasks();
