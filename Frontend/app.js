@@ -176,4 +176,10 @@ async function markCompleted(id) {
     else alert('Failed to mark task as completed.');
 }
 
+async function deleteTask(id) {
+    if (!confirm('Delete this task?')) return;
+    await apiFetch(`${API}/${id}`, { method: 'DELETE' });
+    loadTasks();
+}
+
 loadTasks();
