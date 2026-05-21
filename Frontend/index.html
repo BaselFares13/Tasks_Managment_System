@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="app">
+        <header>
+            <h1>Task Manager</h1>
+            <button id="openAddModal">+ New Task</button>
+        </header>
+
+        <div class="controls">
+
+            <div class="control-group">
+                <span class="control-label">Filter:</span>
+                <label><input type="checkbox" id="filterCompleted" />Completed</label>
+                <label><input type="checkbox" id="filterIncompleted" />Incompleted</label>
+                <label><input type="checkbox" id="filterHighPriority" />High Priority</label>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="control-group">
+                <span class="control-label">Sort by:</span>
+                <label><input type="radio" name="sortOrder" value="none" checked /> Created Date</label>
+                <label><input type="radio" name="sortOrder" value="deadline" /> Deadline</label>
+                <label><input type="radio" name="sortOrder" value="priority" /> Priority</label>
+            </div>
+
+            <button id="applyFilters">Apply</button>
+        </div>
+
+        <div id="taskList" class="task-list">
+            <p class="empty">Loading tasks...</p>
+        </div>
+    </div>
+
+    <div id="addModal" class="modal hidden">
+        <div class="modal-box">
+            <h2>Add Task</h2>
+            <label>Title</label>
+            <input type="text" id="addTitle" placeholder="Task title" />
+
+            <label>Description</label>
+            <textarea id="addDesc" placeholder="Description"></textarea>
+
+            <label>Deadline</label>
+            <input type="datetime-local" id="addDeadline" />
+
+            <label>Priority</label>
+            <select id="addPriority">
+                <option value="0">Low</option>
+                <option value="1" selected>Medium</option>
+                <option value="2">High</option>
+            </select>
+
+            <div class="modal-actions">
+                <button id="submitAdd">Add Task</button>
+                <button class="cancel" id="cancelAdd">Cancel</button>
+            </div>
+            <p id="addError" class="error"></p>
+        </div>
+    </div>
+
+    <div id="editModal" class="modal hidden">
+        <div class="modal-box">
+            <h2>Edit Task</h2>
+            <input type="hidden" id="editId" />
+
+            <label>Title</label>
+            <input type="text" id="editTitle" />
+
+            <label>Description</label>
+            <textarea id="editDesc"></textarea>
+
+            <label>Deadline</label>
+            <input type="datetime-local" id="editDeadline" />
+
+            <label>Priority</label>
+            <select id="editPriority">
+                <option value="0">Low</option>
+                <option value="1">Medium</option>
+                <option value="2">High</option>
+            </select>
+
+            <label>Status</label>
+            <select id="editStatus">
+                <option value="0">To Do</option>
+                <option value="1">Completed</option>
+            </select>
+
+            <div class="modal-actions">
+                <button id="submitEdit">Save Changes</button>
+                <button class="cancel" id="cancelEdit">Cancel</button>
+            </div>
+            <p id="editError" class="error"></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
