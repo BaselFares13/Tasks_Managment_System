@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Backend.DbContext.Interfaces;
 using Backend.Models;
 
@@ -19,7 +20,7 @@ namespace Backend.DbContext
         {
             _tasks = Load();
         }
-        public IList<TaskModel> GetAll() { return new List<TaskModel>(); }
+        public IList<TaskModel> GetAll() { return _tasks.OrderByDescending(t =>t.CreatedAt).ToList(); }
         public TaskModel Add(TaskModel task) {
             
             if(!Enum.IsDefined(typeof(Priority), task.Priority))
@@ -34,10 +35,43 @@ namespace Backend.DbContext
             
             return task;
         }
-        public TaskModel? GetById(Guid id) { return null; }
-        public TaskModel? Update(Guid id, TaskModel updated) { return null; }
-        public bool Delete(Guid id) { return false; }
-        public TaskModel? MarkCompleted(Guid id) { return new TaskModel(); }
+        public TaskModel? GetById(Guid id) =>
+        _tasks.FirstOrDefault(t => t.Id == id);
+        public TaskModel? Update(Guid id, TaskModel updated) {
+            var existing = GetById(id);
+            if (existing is null) return null;
+
+            if (!Enum.IsDefined(typeof(Priority), updated.Priority))
+                throw new ValidationException("Invalid task priority value.");
+
+            if (!Enum.IsDefined(typeof(Models.TaskStatus), updated.Status))
+                throw new ValidationException("Invalid task status value.");
+
+            existing.Title = updated.Title;
+            existing.Description = updated.Description;
+            existing.Deadline = updated.Deadline;
+            existing.Priority = updated.Priority;
+            existing.Status = updated.Status;
+
+            Save();
+            return existing;
+        }
+        public bool Delete(Guid id) {
+            var task = GetById(id);
+            if (task is null) return false;
+
+            _tasks.Remove(task);
+            Save();
+            return true;
+        }
+        public TaskModel? MarkCompleted(Guid id) {
+            var task = GetById(id);
+            if (task is null) return null;
+
+            task.Status = Models.TaskStatus.Completed;
+            Save();
+            return task;
+        }
         public void Save() {
             var json = JsonSerializer.Serialize(_tasks, _jsonOptions);
             File.WriteAllText(_filePath, json);
@@ -48,11 +82,10 @@ namespace Backend.DbContext
                 throw new Exception("File not found: " + _filePath);
 
             var json = File.ReadAllText(_filePath);
-            var tasks =  JsonSerializer.Deserialize<List<TaskModel>>(json, _jsonOptions);
 
-            if(tasks == null)
-                throw new Exception("Failed to deserialize tasks from file: " + _filePath);
+            if (string.IsNullOrWhiteSpace(json)) return new List<TaskModel>();
 
+            var tasks = JsonSerializer.Deserialize<List<TaskModel>>(json, _jsonOptions) ?? new List<TaskModel>();
             return tasks;
         }
 

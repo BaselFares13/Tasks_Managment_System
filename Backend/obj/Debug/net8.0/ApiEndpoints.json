@@ -14,5 +14,111 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "GetAllTasks",
+    "RelativePath": "api/tasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "orderByPriority",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "UpdateTask",
+    "RelativePath": "api/tasks/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "updateTaskDTO",
+        "Type": "Backend.DTOs.UpdateTaskDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "DeleteTask",
+    "RelativePath": "api/tasks/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "GetTaskById",
+    "RelativePath": "api/tasks/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "GetFilteredTasks",
+    "RelativePath": "api/tasks/Filter",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "completed",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "highPrioritized",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Backend.Controllers.tasksController",
+    "Method": "MarkTaskAsCompleted",
+    "RelativePath": "api/tasks/MarkCompleted/{id}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
